@@ -1,0 +1,13 @@
+
+<div class="card card-block" *ngFor="let complaint of complaintArray">
+      <h4 class="card-title">{{ complaint.title|uppercase }}Category:{{ complaint.againstCategoryName}}</h4>
+      <p class="card-text" *ngIf="complaint.againstEmployeeName">Against To:{{ complaint.againstEmployeeName}}</p>
+      <p class="card-text" *ngIf="complaint.assignedEmployeeName">Assigned To:{{ complaint.assignedEmployeeName}}</p>
+      <p class="card-text" *ngIf="complaint.studentName">StudentName:{{ complaint.studentName}}</p>
+      <p class="card-text" *ngIf="complaint.priorityName">Priority:{{ complaint.priorityName}}</p>
+      <p class="card-text" *ngIf="complaint.description">Description:{{ complaint.description}}</p>
+      <p class="card-text" *ngIf="complaint.statusName">Status:{{ complaint.statusName}}</p>
+      <a class="card-link" (click)="getComplaintComment(complaint)">Comment</a>
+      <a class="card-link" (click)="editComplaint(complaint)">Edit</a>
+      <a class="card-link" (click)="showCloseComplaint(complaint)">CloseComplaint</a>
+</div>

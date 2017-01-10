@@ -1,0 +1,125 @@
+<div class="container">
+  <div *ngIf="!submitted">
+    <!-- <h1>Management Info</h1> -->
+    <form [formGroup]="addManagementForm" (ngSubmit)="onSubmit(addManagementForm)">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" formControlName="name" [(ngModel)]="enteredName" placeholder="name" />
+        <div class="alert alert-danger" [hidden]="addManagementForm.controls.name.valid || addManagementForm.controls.name.pristine">Name is required</div>
+      </div>
+      <div class="form-group">
+        <label for="userName">User Name</label>
+        <input type="text" class="form-control" formControlName="userName" [(ngModel)]="enteredUserName" placeholder="user name" />
+        <div class="alert alert-danger" [hidden]="addManagementForm.controls.userName.valid || addManagementForm.controls.userName.pristine">User Name is required</div>
+      </div>
+      <div class="form-group">
+        <label for="nickName">Nick Name</label>
+        <input type="text" class="form-control" formControlName="nickName" [(ngModel)]="enteredNickName" placeholder="nick name" />
+        <div class="alert alert-danger" [hidden]="addManagementForm.controls.nickName.valid || addManagementForm.controls.nickName.pristine">Nick Name is required</div>
+      </div>
+      <div class="form-group">
+        <label for="phoneNo">Phone Number</label>
+        <input type="text" class="form-control" formControlName="phoneNo" [(ngModel)]="enteredPhoneNumber" placeholder="phone number" />
+        <div class="alert alert-danger" [hidden]="addManagementForm.controls.phoneNo.valid || addManagementForm.controls.phoneNo.pristine" *ngIf="addManagementForm.controls.phoneNo.errors && (addManagementForm.controls.phoneNo.dirty || addManagementForm.controls.phoneNo.touched)">Enter A Valid Mobile Number</div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" formControlName="email" [(ngModel)]="enteredEmail" placeholder="email" />
+        <div class="alert alert-danger" [hidden]="addManagementForm.controls.email.valid || addManagementForm.controls.email.pristine">Email is required and must be a valid email pattern</div>
+      </div>
+      <label for="password">Password</label>
+      <div class="input-group">
+        <span class="input-group-addon input-group-addon-primary addon-left ion-eye" (click)="showPassword()"></span>
+        <input type="password" class="form-control with-primary-addon" formControlName="password" id="showPassword" [(ngModel)]="enteredPassword" placeholder="password" />
+      </div>
+      <div class="alert alert-danger" [hidden]="addManagementForm.controls.password.valid || addManagementForm.controls.password.pristine">Password is required and should contain numbers and characters</div>
+      <div class="input-group">
+        <span class="input-group-addon input-group-addon-primary addon-left" (click)="showPassword()"><input type="checkbox" aria-label="Checkbox for following text input" [(ngModel)]="isTeacher" (click)="teacherPresence(isTeacher)" [ngModelOptions]="{standalone: true}"></span>
+        <input type="text" class="form-control with-primary-addon" placeholder="Are You A Teacher?" readonly/>
+      </div>
+      <!--First Div-->
+      <div cass=row>
+        <div *ngIf="isTeacher" class="col-xlg-8 col-lg-8 col-md-12 col-sm-12 col-xs-12">
+          <div class="row shift-up" *ngFor="let count of arr">
+            <div>
+              <div class="card card-inverse card-warning text-xs-center">
+                <div class="card-block">
+                  <div class="form-group">
+                    <label for="exampleSelect1">Class</label>
+                    <select class="form-control" id="exampleSelect1" [(ngModel)]="selectedClass" [ngModelOptions]="{standalone: true}">
+                <option *ngFor="let standard of standards" [ngValue]="standard">{{standard.name}}</option>
+              </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="card card-inverse card-warning text-xs-center">
+                <div class="card-block">
+                  <div class="form-group">
+                    <label for="exampleSelect1">Subjects</label>
+                    <select class="form-control" id="exampleSelect1" [(ngModel)]="selectedSubject" [ngModelOptions]="{standalone: true}">
+                  <option *ngFor= "let subject of subjects" [ngValue]="subject">{{subject.name}}</option>
+                </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <i class="add-item-icon ion-plus-round" [ngStyle]="{'font-size': '15px', 'font-weight': 'bold', 'line-height': '100px'}" (click)="addAnotherEntry()"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xlg-4 col-lg-4 col-md-12 col-sm-12 col-xs-12">
+          <div class="row shift-up" *ngFor="let obj of myDisplayArray">
+            <div>
+              <div class="card card-inverse card-warning text-xs-center">
+                <div class="accent">{{obj.subjectName}}</div>
+                <div class="accent">{{obj.standardName}}</div>
+              </div>
+            </div>
+            <i class="add-item-icon ion-close-round" [ngStyle]="{'font-size': '15px', 'font-weight': 'bold', 'line-height': '100px'}" (click)="removeStandardAndClass(obj)"></i>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-default" [disabled]="!addManagementForm.valid" (click)="addManagementData()">Submit</button>
+    </form>
+  </div>
+
+  <div *ngIf="submitted">
+    <h2>You submitted the following:</h2>
+    <div class="row">
+      <div class="col-md-2">Name</div>
+      <div class="col-md-10 pull-left">{{ enteredName }}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">User Name</div>
+      <div class="col-md-10 pull-left">{{ enteredUserName }}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">Nick Name</div>
+      <div class="col-md-10 pull-left">{{ enteredNickName }}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">Phone Number</div>
+      <div class="col-md-10 pull-left">{{ enteredPhoneNumber }}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">Email</div>
+      <div class="col-md-10 pull-left">{{ enteredEmail }}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">Password</div>
+      <div class="col-md-10 pull-left">{{ enteredPassword }}</div>
+    </div>
+    <div class="row" *ngFor="let arr of myDisplayArray">
+      <div class="col-md-2">Class:{{arr.standardName}}</div>
+      <div class="col-md-10 pull-left">{{ arr.subjectName }}</div>
+    </div>
+    <br />
+    <button class="btn btn-default" (click)="addAnotherForm()">Add Another</button>
+  </div>
+  <simple-notifications></simple-notifications>
+</div>

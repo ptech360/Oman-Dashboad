@@ -1,0 +1,163 @@
+<div class="row">
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12" style="color:black;">
+    <!-- Complaint Page -->
+    <div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content" style=" background-color:#011627;">
+          <div class="modal-header">
+            <button class="close" aria-label="Close" (click)="hideChildModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            <h4 class="modal-title">{{complaintTitle}}</h4>
+          </div>
+          <div class="modal-body">
+            <!-- <input type="text" name="first_name" maxlength="100" [(ngModel)]="complaintTitle" />
+            <input type="text" name="first_name" maxlength="100" [(ngModel)]="complaintTitle" /> -->
+            <div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for Employee..." [(ngModel)]="term" list="somethingelse" (keyup)="showEmployees($event)">
+                    <div *ngFor="let employee of employeeList |filter:term| slice:0:5">
+                      <div class="row" *ngIf="showEmployeeNames">
+                        <button class="col-md-6 clear btn btn-link" (click)="includeEmployee(employee)">
+                              {{employee.name}}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.row -->
+              <label for="inputEmail3" class="col-sm-1 form-control-label" style="color:black;">Priority</label>
+              <select class="form-control" id="exampleSelect1" [(ngModel)]="selectedPriority" (ngModelChange)="onChange($event)">
+                <option  *ngFor="let priority of priorityList" [ngValue]="prior">{{priority.name}}</option>
+              </select>
+              <div class="checkbox container" style="color:black;">
+                <ba-checkbox [(ngModel)]="inProgress" [label]="'In Progress'" [ngModelOptions]="{standalone: false}"></ba-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <!-- <button class="btn btn-primary confirm-btn" (click)="hideChildModal()">Save changes</button> -->
+            <div class="form-group row">
+              <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-warning" (click)="submitEdittedComplaint()">Save Changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="feed-messages-container">
+
+  <div class="btn-group">
+    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Complaint Type
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" (click)="getNewComplaint()" [ngClass]="{'active':newComplaintSelected}">New</a>
+      <div class="dropdown-divider"></div>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" (click)="getAssignedComplaint()" [ngClass]="{'active':assignedComplaintSelected}">Assigned</a>
+      <div class="dropdown-divider"></div>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" (click)="getProgressComplaint()" [ngClass]="{'active':progressComplaintSelected}">InProgress</a>
+      <div class="dropdown-divider"></div>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" (click)="getClosedComplaint()" [ngClass]="{'active':closedComplaintSelected}">Closed</a>
+      <div class="dropdown-divider"></div>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" (click)="getReopenComplaint()" [ngClass]="{'active':reopenComplaintSelected}">Reopen</a>
+      <div class="dropdown-divider"></div>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" (click)="getSatisfiedComplaint()" [ngClass]="{'active':satisfiedComplaintSelected}">Satisfied</a>
+      <div class="dropdown-divider"></div>
+      <!-- <a class="dropdown-item" href="#">Separated link</a> -->
+    </div>
+  </div>
+  <div class="feed-message" *ngFor="let complaint of complaintArray; let i = index" [attr.data-index]="i">
+
+    <div class="card card-block">
+      <h4 class="card-title">{{ complaint.title|uppercase }}Category:{{ complaint.againstCategoryName}}</h4>
+      <p class="card-text">EmployeeName:{{ complaint.assignedEmployeeName}}</p>
+      <p class="card-text">StudentName:{{ complaint.studentName}}</p>
+      <p class="card-text">Priority:{{ complaint.priorityName}}</p>
+      <p class="card-text">Description:{{ complaint.description}}</p>
+      <p class="card-text">Status:{{ complaint.statusName}}</p>
+      <a class="card-link" (click)="getComplaintComment(complaint)">Comment</a>
+      <a class="card-link" (click)="editComplaint(complaint)">Edit</a>
+      <a class="card-link" (click)="showCloseComplaint(complaint)">CloseComplaint</a>
+    </div>
+    <div class="chat-panel card card-default" id="{{complaint.id}}" style="display:none;">
+      <div class="right clearfix">
+        <button class="closeButton" (click)="closeCommentSection(complaint)"><i class="ion-close-round"></i></button>
+      </div>
+      <div class="card-block">
+        <div *ngIf="noComments">
+          <h5>No Comments</h5>
+        </div>
+        <ul *ngFor=" let Comment of allComment" class=" clearfix">
+          <div class="float-xs-left" *ngIf="Comment.employeeId!='null'">
+            <li>
+              <div class="chat-body clearfix">
+                <div class="header">
+                  <strong class="primary-font">Me</strong>
+                  <small class="pull-right text-muted">
+                    <i class="fa fa-clock-o fa-fw"></i>{{Comment.createdAt | amTimeAgo}}
+                  </small>
+                </div>
+                <p>
+                  {{Comment.comment}}{{Comment.employeeId}}
+                </p>
+              </div>
+            </li>
+          </div>
+
+          <div class="float-xs-right" *ngIf="Comment.employeeId === flag">
+            <li>
+              <div class="chat-body clearfix">
+                <div class="header">
+                  <small class=" text-muted">
+                    <i class="fa fa-clock-o fa-fw"></i>{{Comment.createdAt | amTimeAgo}}</small>
+                  <strong class="pull-right primary-font">Bhaumik Patel</strong>
+                </div>
+                <p>
+                  {{Comment.comment}}
+                </p>
+              </div>
+            </li>
+          </div>
+        </ul>
+      </div>
+      <div class="card-footer" *ngIf="showSendComment">
+        <div class="input-group">
+          <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your comments here..." [(ngModel)]="writtenComment">
+          <span class="input-group-btn">
+                <button class="btn btn-warning btn-sm" id="btn-chat" (click)="sendComment(writtenComment,complaint)">
+                    Send
+                </button>
+            </span>
+        </div>
+      </div>
+    </div>
+    <div  class="{{complaint.id}}" style="display:none;">
+    <form>
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Reason For Closing This Complaint?" [(ngModel)]="reasonForClosing" name="rca">
+      </div>
+      <div class="form-group">
+        <textarea class="form-control" placeholder="Comment" [(ngModel)]="commentForClosing" name="comment"></textarea>
+      </div>
+      <button type="submit" class="btn btn-success" (click)="sendCloseComplaint(complaint,i)">Close</button>
+      <button type="submit" class="btn btn-success" (click)="closeForm(complaint)">Cancel</button>
+    </form>
+  </div>
+  </div>
+  <simple-notifications [options]="options"></simple-notifications>
+
+  <h6 infinite-scroll (scrolled)="onScroll()" [infiniteScrollThrottle]="3000">{{paginationMessage}}</h6>
+</div>
