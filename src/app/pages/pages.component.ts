@@ -13,9 +13,8 @@ import {Component, ViewEncapsulation} from '@angular/core';
       </div>
     </div>
     <footer class="al-footer clearfix">
-      <!--<div class="al-footer-right">Created with <i class="ion-heart"></i></div>-->
       <div class="al-footer-main clearfix">
-        <div class="al-copy">&copy; <a href="http://www.nxtlifetechnologies.com">Nxtlife</a> 2016</div>
+        <!--<div class="al-copy">&copy; <a href="http://www.nxtlifetechnologies.com">Nxtlife</a> 2016</div>-->
       </div>
     </footer>
     <ba-back-top position="200"></ba-back-top>

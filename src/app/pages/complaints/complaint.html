@@ -53,9 +53,17 @@
 </div>
 
 <div class="feed-messages-container">
+  <div class="btn-group"   role="group" aria-label="..." style="margin-bottom:10px">
+    <button type="button" (click)="getNewComplaint()" [ngClass]="{'active':newComplaintSelected}" class="btn btn-danger">Newt</button>
+    <button type="button" (click)="getAssignedComplaint()" [ngClass]="{'active':assignedComplaintSelected}" class="btn btn-danger">Assigned</button>
+    <button type="button" (click)="getProgressComplaint()" [ngClass]="{'active':progressComplaintSelected}" class="btn btn-danger">In Progress</button>
+    <button type="button" (click)="getClosedComplaint()" [ngClass]="{'active':closedComplaintSelected}" class="btn btn-danger">Closed</button>
+    <button type="button" (click)="getReopenComplaint()" [ngClass]="{'active':reopenComplaintSelected}" class="btn btn-danger">Reopen</button>
+    <button type="button" (click)="getSatisfiedComplaint()" [ngClass]="{'active':satisfiedComplaintSelected}" class="btn btn-danger">Satisfied</button>
+  </div>
 
-  <div class="btn-group">
-    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <!--<div class="btn-group">
+    <button style="margin-bottom:10px" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       Complaint Type
     </button>
     <div class="dropdown-menu">
@@ -76,12 +84,93 @@
       <div class="dropdown-divider"></div>
       <a class="dropdown-item" (click)="getSatisfiedComplaint()" [ngClass]="{'active':satisfiedComplaintSelected}">Satisfied</a>
       <div class="dropdown-divider"></div>
-      <!-- <a class="dropdown-item" href="#">Separated link</a> -->
     </div>
+  </div>-->
+  <div  *ngFor="let complaint of complaintArray; let i = index" [attr.data-index]="i">
+<div clas="row">
+  <div class="col-lg-5 card card-block" style="margin-left:30px" *ngFor="let complaint of complaintArray">
+        <div style="float:right; font-size:11px">
+          <b>Created on :</b> {{complaint.createdAt | date:"dd/MM/yy"}}
+        </div>            
+       <div clas="col-lg-12 col-md-12 col-sm-12" style="margin-bottom: 15px; padding:15px;height: 46px;" >
+          <b>{{ complaint.title}}</b>
+        </div>
+    <div class="table-responsive">
+      <table class="table">
+        <tr>
+          <td>
+            <b>Category</b>
+          </td>
+          <td>
+            {{ complaint.againstCategoryName}}
+          </td>
+        </tr>
+        <tr >
+          <td>
+            <b>Against</b>
+          </td>
+          <td *ngIf="complaint.againstEmployeeName">
+            {{ complaint.againstEmployeeName}}
+          </td>
+          <td *ngIf="complaint.againstEmployeeName == null">
+            N.A.
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>StudentName</b>
+          </td>
+          <td *ngIf="complaint.studentName">
+            {{ complaint.studentName}}
+          </td>
+          <td *ngIf="complaint.studentName == null">
+            -
+          </td>          
+        </tr>
+        <tr>
+          <td>
+            <b>Priority</b>
+          </td>
+          <td  *ngIf="complaint.priorityName">
+            {{ complaint.priorityName}}
+          </td>
+          <td  *ngIf="complaint.priorityName == null">
+            -
+          </td>          
+        </tr>
+        <tr>
+          <td>
+            <b>Status</b>
+          </td>
+          <td *ngIf="complaint.statusName">
+            {{ complaint.statusName}}
+          </td>
+          <td *ngIf="complaint.statusName == null">
+            None
+          </td>          
+        </tr>  
+      </table>
   </div>
-  <div class="feed-message" *ngFor="let complaint of complaintArray; let i = index" [attr.data-index]="i">
-
-    <div class="card card-block">
+      <div class="row" *ngIf="complaint.description">
+        <div clas="col-lg-12 col-md-12 col-sm-12" style="overflow-y: hidden; overflow-x: hidden; height: 10pt; margin-bottom: 15px; padding:15px" >
+          <span *ngIf="complaint.rca"><b>Root Cause:</b> {{ complaint.rca}}</span>
+        </div>
+        <div clas="col-lg-12 col-md-12 col-sm-12" style="    overflow-y: scroll; overflow-x: hidden; height: 64pt; margin-bottom: 15px; padding:15px" >
+          <b>Description:</b> {{ complaint.description}}
+        </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 text-center" (click)="getComplaintComment(complaint)">
+            <button type="button" class="btn btn-success">Comment</button>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 text-center" (click)="editComplaint(complaint)">
+            <button type="button" class="btn btn-info">Edit</button>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 text-center" (click)="showCloseComplaint(complaint)">
+            <button type="button" class="btn btn-danger">Close</button>
+          </div>
+      </div>
+  </div>
+</div>
+    <!--<div class="card card-block">
       <h4 class="card-title">{{ complaint.title|uppercase }}Category:{{ complaint.againstCategoryName}}</h4>
       <p class="card-text">EmployeeName:{{ complaint.assignedEmployeeName}}</p>
       <p class="card-text">StudentName:{{ complaint.studentName}}</p>
@@ -91,7 +180,7 @@
       <a class="card-link" (click)="getComplaintComment(complaint)">Comment</a>
       <a class="card-link" (click)="editComplaint(complaint)">Edit</a>
       <a class="card-link" (click)="showCloseComplaint(complaint)">CloseComplaint</a>
-    </div>
+    </div>-->
     <div class="chat-panel card card-default" id="{{complaint.id}}" style="display:none;">
       <div class="right clearfix">
         <button class="closeButton" (click)="closeCommentSection(complaint)"><i class="ion-close-round"></i></button>
@@ -158,6 +247,6 @@
   </div>
   </div>
   <simple-notifications [options]="options"></simple-notifications>
-
-  <h6 infinite-scroll (scrolled)="onScroll()" [infiniteScrollThrottle]="3000">{{paginationMessage}}</h6>
+<!--
+  <h6 infinite-scroll (scrolled)="onScroll()" [infiniteScrollThrottle]="3000">{{paginationMessage}}</h6>-->
 </div>
