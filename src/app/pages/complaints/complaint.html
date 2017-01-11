@@ -3,12 +3,12 @@
     <!-- Complaint Page -->
     <div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
-        <div class="modal-content" style=" background-color:#011627;">
+        <div class="modal-content" style="background:gray; color:black !important">
           <div class="modal-header">
             <button class="close" aria-label="Close" (click)="hideChildModal()">
             <span aria-hidden="true">&times;</span>
           </button>
-            <h4 class="modal-title">{{complaintTitle}}</h4>
+            <h4 class="modal-title" style="color:black">{{complaintTitle}}</h4>
           </div>
           <div class="modal-body">
             <!-- <input type="text" name="first_name" maxlength="100" [(ngModel)]="complaintTitle" />
@@ -54,7 +54,7 @@
 
 <div class="feed-messages-container">
   <div class="btn-group"   role="group" aria-label="..." style="margin-bottom:10px">
-    <button type="button" (click)="getNewComplaint()" [ngClass]="{'active':newComplaintSelected}" class="btn btn-danger">Newt</button>
+    <button type="button" (click)="getNewComplaint()" [ngClass]="{'active':newComplaintSelected}" class="btn btn-danger">New</button>
     <button type="button" (click)="getAssignedComplaint()" [ngClass]="{'active':assignedComplaintSelected}" class="btn btn-danger">Assigned</button>
     <button type="button" (click)="getProgressComplaint()" [ngClass]="{'active':progressComplaintSelected}" class="btn btn-danger">In Progress</button>
     <button type="button" (click)="getClosedComplaint()" [ngClass]="{'active':closedComplaintSelected}" class="btn btn-danger">Closed</button>
@@ -88,86 +88,97 @@
   </div>-->
   <div  *ngFor="let complaint of complaintArray; let i = index" [attr.data-index]="i">
 <div clas="row">
-  <div class="col-lg-5 card card-block" style="margin-left:30px" *ngFor="let complaint of complaintArray">
+  <div class="col-lg-10 card card-block" style="margin-left:30px; background:white!important">
+        <div class="card-header" style=" line-height: 2px;border-bottom: #e8e8e8 solid 2px">
         <div style="float:right; font-size:11px">
           <b>Created on :</b> {{complaint.createdAt | date:"dd/MM/yy"}}
         </div>            
        <div clas="col-lg-12 col-md-12 col-sm-12" style="margin-bottom: 15px; padding:15px;height: 46px;" >
           <b>{{ complaint.title}}</b>
         </div>
-    <div class="table-responsive">
-      <table class="table">
-        <tr>
-          <td>
-            <b>Category</b>
-          </td>
-          <td>
-            {{ complaint.againstCategoryName}}
-          </td>
-        </tr>
-        <tr >
-          <td>
-            <b>Against</b>
-          </td>
-          <td *ngIf="complaint.againstEmployeeName">
-            {{ complaint.againstEmployeeName}}
-          </td>
-          <td *ngIf="complaint.againstEmployeeName == null">
-            N.A.
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>StudentName</b>
-          </td>
-          <td *ngIf="complaint.studentName">
-            {{ complaint.studentName}}
-          </td>
-          <td *ngIf="complaint.studentName == null">
-            -
-          </td>          
-        </tr>
-        <tr>
-          <td>
-            <b>Priority</b>
-          </td>
-          <td  *ngIf="complaint.priorityName">
-            {{ complaint.priorityName}}
-          </td>
-          <td  *ngIf="complaint.priorityName == null">
-            -
-          </td>          
-        </tr>
-        <tr>
-          <td>
-            <b>Status</b>
-          </td>
-          <td *ngIf="complaint.statusName">
-            {{ complaint.statusName}}
-          </td>
-          <td *ngIf="complaint.statusName == null">
-            None
-          </td>          
-        </tr>  
-      </table>
+        </div>
+    <div class="row">
+      <div class="col-lg-6 col-md-6">
+        <div class="table-responsive">
+              <table class="table">
+                <tr class="border">
+                  <td>
+                    <b>Category</b>
+                  </td>
+                  <td>
+                    {{ complaint.againstCategoryName}}
+                  </td>
+                </tr>
+                <tr class="border">
+                  <td>
+                    <b>Against</b>
+                  </td>
+                  <td *ngIf="complaint.againstEmployeeName">
+                    {{ complaint.againstEmployeeName}}
+                  </td>
+                  <td *ngIf="complaint.againstEmployeeName == null">
+                    N.A.
+                  </td>
+                </tr>
+                <tr class="border">
+                  <td>
+                    <b>StudentName</b>
+                  </td>
+                  <td *ngIf="complaint.studentName">
+                    {{ complaint.studentName}}
+                  </td>
+                  <td *ngIf="complaint.studentName == null">
+                    -
+                  </td>          
+                </tr>
+                <tr class="border">
+                  <td>
+                    <b>Priority</b>
+                  </td>
+                  <td  *ngIf="complaint.priorityName">
+                    {{ complaint.priorityName}}
+                  </td>
+                  <td  *ngIf="complaint.priorityName == null">
+                    -
+                  </td>          
+                </tr>
+                <tr class="border">
+                  <td>
+                    <b>Status</b>
+                  </td>
+                  <td *ngIf="complaint.statusName">
+                    {{ complaint.statusName}}
+                  </td>
+                  <td *ngIf="complaint.statusName == null">
+                    None
+                  </td>          
+                </tr>  
+              </table>
+      </div>     
+    </div>
+      <div class="col-lg-6 col-md-6">
+         <div class="row" *ngIf="complaint.description">
+          <div clas="col-lg-12 col-md-12 col-sm-12" style="overflow-y: hidden; overflow-x: hidden; height: 10pt; margin-bottom: 5px; padding:15px" >
+            <span *ngIf="complaint.rca"><b>Root Cause:</b> {{ complaint.rca}}</span>
+          </div>
+          <div clas="col-lg-12 col-md-12 col-sm-12" style="    overflow-y: scroll; overflow-x: hidden; height: 106pt; margin-bottom: 15px; padding:15px" >
+            <b>Description:</b> {{ complaint.description}}
+          </div>
+        </div>
+      </div> 
   </div>
-      <div class="row" *ngIf="complaint.description">
-        <div clas="col-lg-12 col-md-12 col-sm-12" style="overflow-y: hidden; overflow-x: hidden; height: 10pt; margin-bottom: 15px; padding:15px" >
-          <span *ngIf="complaint.rca"><b>Root Cause:</b> {{ complaint.rca}}</span>
-        </div>
-        <div clas="col-lg-12 col-md-12 col-sm-12" style="    overflow-y: scroll; overflow-x: hidden; height: 64pt; margin-bottom: 15px; padding:15px" >
-          <b>Description:</b> {{ complaint.description}}
-        </div>
-          <div class="col-lg-4 col-md-4 col-sm-4 text-center" (click)="getComplaintComment(complaint)">
-            <button type="button" class="btn btn-success">Comment</button>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-4 text-center" (click)="editComplaint(complaint)">
-            <button type="button" class="btn btn-info">Edit</button>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-4 text-center" (click)="showCloseComplaint(complaint)">
-            <button type="button" class="btn btn-danger">Close</button>
-          </div>
-      </div>
+  <div class="row">
+
+  </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 text-center" (click)="getComplaintComment(complaint)">
+              <button type="button" class="btn btn-success">Comment</button>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 text-center" (click)="editComplaint(complaint)">
+              <button type="button" class="btn btn-info">Edit</button>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 text-center" (click)="showCloseComplaint(complaint)">
+              <button type="button" class="btn btn-danger">Close</button>
+            </div>
   </div>
 </div>
     <!--<div class="card card-block">

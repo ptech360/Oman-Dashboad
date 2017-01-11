@@ -21,3 +21,14 @@
 .blurCalendar {
   height: 475px;
 }
+
+.card-title {
+    color: #000 !important;
+}
+.card {
+    background: #fff !important;
+}
+
+.card > .card-header {
+        margin-bottom: 5px;
+}

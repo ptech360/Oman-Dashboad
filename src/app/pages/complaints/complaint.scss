@@ -285,3 +285,10 @@ button .ion-close-round {
   -webkit-line-clamp: 5;
   height: calc(1em * 1.2 * 5);
 }
+.card > .card-header {
+        margin-bottom: 5px;
+}
+.border{
+  border-top:2px solid rgba(192, 192, 192, 0.21);;
+}
+
