@@ -34,7 +34,7 @@ ngOnInit() {
        this.chartByStatus(this.router);
        this.chartByCategoryAndStatus(this.router); 
        this.chartByProgramAndStandard();       
-      }, 1000);
+      }, 2000);
  }
  onResize(event) {
    this.chartByStatus(this.router);
@@ -132,11 +132,9 @@ ngOnInit() {
    console.log("before");
    data.addColumn('string','ProgramName');
    data.addColumn({type: 'number',role: 'scope'});
-   console.log("out");
    for(let i=0; i < this.complaintByProgramAndStandard[0].standardResults.length; i++){
      data.addColumn('number',this.complaintByProgramAndStandard[0].standardResults[i].standardName);
      data.addColumn({type: 'number',role: 'scope'});
-     console.log("loop")
    }
    
    data.addRows(this.complaintByProgramAndStandard.length);
@@ -146,9 +144,7 @@ ngOnInit() {
      for(let j = 0; j < this.complaintByProgramAndStandard[i].standardResults.length; j++){
         data.setCell(i,parseInt(this.complaintByProgramAndStandard[i].standardResults[j].standardId)*2,this.complaintByProgramAndStandard[i].standardResults[j].count);
         data.setCell(i,parseInt(this.complaintByProgramAndStandard[i].standardResults[j].standardId)*2+1,this.complaintByProgramAndStandard[i].standardResults[j].standardId);
-        console.log("inner");
      }
-     console.log("outer");
    }  
    var options = {	isStacked:'true',chartArea: {width:'50%'},}; 
    var chart = new google.visualization.BarChart(document.getElementById('chart_by_program_standard'));
