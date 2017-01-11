@@ -91,8 +91,34 @@ export class ChartService {
     })
   }
   
-  public getProgram(){
+  public getComplaintOfProgram(){
     return this.safeHttp.get(this.actionUrl+"/"+this._configuration.getManagementRole()+"/"+this._configuration.getManagementId()+"/complaint/program-standard")
+    .then(res =>{
+      return res;
+    })
+    .catch(err =>{
+      if (err.status == 0) {
+          this.safeHttp.ErrorMessage();
+        } else {
+          return Promise.reject(err);
+        }
+    });
+  }
+  public getBelowPerfomanceOfProgram(){
+    return this.safeHttp.get(this.actionUrl+"/"+this._configuration.getManagementRole()+"/"+this._configuration.getManagementId()+"/below-performer/program")
+    .then(res =>{
+      return res;
+    })
+    .catch(err =>{
+      if (err.status == 0) {
+          this.safeHttp.ErrorMessage();
+        } else {
+          return Promise.reject(err);
+        }
+    });
+  }
+  public getBelowPerfomanceOfProgramById(programId){
+    return this.safeHttp.get(this.actionUrl+"/"+this._configuration.getManagementRole()+"/"+this._configuration.getManagementId()+"/below-performer/program/"+programId)
     .then(res =>{
       return res;
     })

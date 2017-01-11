@@ -13,11 +13,12 @@ export class Dashboard {
   public complaintByStatus:any;
   public complaintByCategoryAndStatus:any;
   public complaintByProgramAndStandard:any;
+  public belowPerformance:any;
   constructor(private router:Router,public c:ChartService) {
     if(!window.localStorage.getItem("access_token")){
         this.router.navigateByUrl(`/login`);
+    }
   }
-}
 
 ngOnInit() {
      google.charts.load('current', {'packages':['corechart']});     
@@ -27,25 +28,28 @@ ngOnInit() {
      this.c.getComplaintByCategoryAndStatus().then(res =>{
        this.complaintByCategoryAndStatus = res;       
      });
-     this.c.getProgram().then(res =>{
+     this.c.getComplaintOfProgram().then(res =>{
        this.complaintByProgramAndStandard = res;
+     });
+     this.c.getBelowPerfomanceOfProgram().then(res =>{
+       this.belowPerformance = res;
      });
      setTimeout(() => { 
        this.chartByStatus(this.router);
        this.chartByCategoryAndStatus(this.router); 
-       this.chartByProgramAndStandard();       
+       this.chartByProgramAndStandard(); 
+       this.chartByBelowPerformanceOfProgram(this.router);      
       }, 2000);
  }
  onResize(event) {
    this.chartByStatus(this.router);
    this.chartByCategoryAndStatus(this.router);
    this.chartByProgramAndStandard();
+   this.chartByBelowPerformanceOfProgram(this.router);
  }
 
  chartByStatus(router) {
    var data = new google.visualization.DataTable();
-  //  var res = this.complaintByStatus;
-  //  this.c.getComplaintByStatus().then(res => {
      data.addColumn('string','Status');
      data.addColumn('number','Complaints');
      data.addColumn({type: 'number',role: 'scope'});
@@ -65,13 +69,10 @@ ngOnInit() {
          let sid = data.getValue(selectedRow,2);
          router.navigate(['/pages/view-complaint/status',sid]); 
        }
-  //  });
  }
  
  chartByCategoryAndStatus(router){
    var data = new google.visualization.DataTable();
-  //  var res = this.complaintByCategoryAndStatus;
-  //  this.c.getComplaintByCategoryAndStatus().then(res =>{
     data.addColumn('string','categoryName');
     data.addColumn({type: 'number',role: 'scope'});
     for(let i = 0; i < this.complaintByCategoryAndStatus[0].statusResults.length; i++)
@@ -122,12 +123,9 @@ ngOnInit() {
       router.navigate(['/pages/view-complaint/category-status',categoryId,statusId]);
     }
   };
-  google.visualization.events.addListener(chart, 'click', handler);
-  //  });
-   
+  google.visualization.events.addListener(chart, 'click', handler);   
  }
- chartByProgramAndStandard(){
-   
+ chartByProgramAndStandard(){   
    var data = new google.visualization.DataTable();
    console.log("before");
    data.addColumn('string','ProgramName');
@@ -150,5 +148,43 @@ ngOnInit() {
    var chart = new google.visualization.BarChart(document.getElementById('chart_by_program_standard'));
    chart.draw(data, options);
  }
-
+ chartByBelowPerformanceOfProgram(router){
+     var data = new google.visualization.DataTable();
+     data.addColumn('string','Program');
+     data.addColumn('number','Performance');
+     data.addColumn({type: 'number',role: 'scope'});
+     data.addRows(this.belowPerformance.length);
+     for (let i = 0; i < this.belowPerformance.length; i++) {
+        data.setCell(i, 0, this.belowPerformance[i].programName);
+        data.setCell(i, 1, this.belowPerformance[i].count);
+        data.setCell(i, 2, this.belowPerformance[i].programId);
+      }
+       var options = {};
+       var chart = new google.visualization.PieChart(document.getElementById('chart_of_below_permance'));
+       chart.draw(data, options);
+       google.visualization.events.addListener(chart, 'select', selectHandler);
+       var that = this;
+       function selectHandler(){
+         let selectedRow = chart.getSelection()[0].row;
+         let pId = data.getValue(selectedRow,2);
+         that.chartByProgramId(pId);
+       }
+ }
+ chartByProgramId(programId){
+   this.c.getBelowPerfomanceOfProgramById(programId).then(res =>{
+    var data = new google.visualization.DataTable();
+    data.addColumn('string','Standard');
+    data.addColumn('number','Performance');
+    data.addColumn({type: 'number',role: 'scope'});
+    data.addRows(res.length);
+    for (let i = 0; i < res.length; i++) {
+        data.setCell(i, 0, res[i].standardName);
+        data.setCell(i, 1, res[i].count);
+        data.setCell(i, 2, res[i].standardId);
+      }
+      var options = {};
+      var chart = new google.visualization.PieChart(document.getElementById('chart_of_below_permance'));
+      chart.draw(data, options);
+    });
+ }
 }
