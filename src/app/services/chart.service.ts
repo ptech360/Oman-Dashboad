@@ -6,7 +6,7 @@ import 'rxjs/add/operator/toPromise';
 import { Configuration } from './utilities.storage';
 
 import { SafeHttp } from './safe-http';
-declare let google:any;
+declare let google: any;
 
 @Injectable()
 export class ChartService {
@@ -22,11 +22,11 @@ export class ChartService {
     this.actionUrl = _configuration.Server;
     this.header = _configuration.header();
   }
-  
+
   public getComplaintByStatus() {
-    return this.safeHttp.get(this.actionUrl+"/"+ this._configuration.getManagementRole()+"/" + this._configuration.getManagementId() +"/complaint/status").then(res => {
-        return res;
-      })
+    return this.safeHttp.getWithoutHeaders(this.actionUrl + "/" + this._configuration.getManagementRole() + "/" + this._configuration.getManagementId() + "/complaint/status").then(res => {
+      return res;
+    })
       .catch(err => {
         if (err.status == 0) {
           this.safeHttp.ErrorMessage();
@@ -35,9 +35,79 @@ export class ChartService {
         }
       });
   }
-  
+
   public getComplaintByCategoryAndStatus() {
-    return this.safeHttp.get(this.actionUrl+"/"+ this._configuration.getManagementRole()+"/" + this._configuration.getManagementId() +"/complaint/category-status").then(res => {
+    return this.safeHttp.getWithoutHeaders(this.actionUrl + "/" + this._configuration.getManagementRole() + "/" + this._configuration.getManagementId() + "/complaint/category-status").then(res => {
+      return res;
+    })
+      .catch(err => {
+        if (err.status == 0) {
+          this.safeHttp.ErrorMessage();
+        } else {
+          return Promise.reject(err);
+        }
+      });
+  }
+
+  public getComplaintByStatusId(statusId) {
+    return this.safeHttp.getWithoutHeaders(this.actionUrl + "/" + this._configuration.getManagementRole() + "/" + this._configuration.getManagementId() + "/complaint/status/" + statusId)
+      .then(res => {
+        return res;
+      })
+      .catch(err => {
+        if (err.status == 0) {
+          this.safeHttp.ErrorMessage();
+        } else {
+          return Promise.reject(err);
+        }
+      })
+  }
+
+  public getComplaintByCategoryId(categoryId) {
+    return this.safeHttp.getWithoutHeaders(this.actionUrl + "/" + this._configuration.getManagementRole() + "/" + this._configuration.getManagementId() + "/complaint/category-status/category/" + categoryId)
+      .then(res => {
+        return res;
+      })
+      .catch(err => {
+        if (err.status == 0) {
+          this.safeHttp.ErrorMessage();
+        } else {
+          return Promise.reject(err);
+        }
+      })
+  }
+
+  public getComplaintByCategoryAndStatusId(categoryId, statusId) {
+    return this.safeHttp.getWithoutHeaders(this.actionUrl + "/" + this._configuration.getManagementRole() + "/" + this._configuration.getManagementId() + "/complaint/category-status/" + categoryId + "/" + statusId)
+      .then(res => {
+        return res;
+      })
+      .catch(err => {
+        if (err.status == 0) {
+          this.safeHttp.ErrorMessage();
+        } else {
+          return Promise.reject(err);
+        }
+      })
+  }
+
+  public getComplaintOfProgram() {
+    return this.safeHttp.getWithoutHeaders(this.actionUrl + "/" + this._configuration.getManagementRole() + "/" + this._configuration.getManagementId() + "/complaint/program-standard")
+      .then(res => {
+        return res;
+      })
+      .catch(err => {
+        if (err.status == 0) {
+          this.safeHttp.ErrorMessage();
+        } else {
+          return Promise.reject(err);
+        }
+      });
+  }
+
+  public getComplaintOfProgramByProgramId(programId) {
+    return this.safeHttp.getWithoutHeaders(this.actionUrl + "/" + this._configuration.getManagementRole() + "/" + this._configuration.getManagementId() + "/complaint/program-standard/program/" + programId)
+      .then(res => {
         return res;
       })
       .catch(err => {
@@ -49,85 +119,75 @@ export class ChartService {
       });
   }
   
-  public getComplaintByStatusId(statusId){
-    return this.safeHttp.getWithoutHeaders(this.actionUrl+"/"+this._configuration.getManagementRole()+"/"+this._configuration.getManagementId()+"/complaint/status/"+statusId)
-    .then(res =>{
-      return res;
-    })
-    .catch(err =>{
-      if (err.status == 0) {
+  public getComplaintOfProgramByStandardId(standardId){
+    
+  }
+
+  public getComplaintOfProgramByProgramAndStandardId(programId,standardId) {
+    return this.safeHttp.getWithoutHeaders(this.actionUrl + "/" + this._configuration.getManagementRole() + "/" + this._configuration.getManagementId() + "/complaint/program-standard/" + programId +"/" + standardId)
+      .then(res => {
+        return res;
+      })
+      .catch(err => {
+        if (err.status == 0) {
           this.safeHttp.ErrorMessage();
         } else {
           return Promise.reject(err);
         }
-    })
+      });
+  }
+
+  public getBelowPerfomanceOfProgram() {
+    return this.safeHttp.getWithoutHeaders(this.actionUrl + "/" + this._configuration.getManagementRole() + "/" + this._configuration.getManagementId() + "/below-performer/program")
+      .then(res => {
+        return res;
+      })
+      .catch(err => {
+        if (err.status == 0) {
+          this.safeHttp.ErrorMessage();
+        } else {
+          return Promise.reject(err);
+        }
+      });
+  }
+  public getBelowPerfomanceOfProgramById(programId) {
+    return this.safeHttp.getWithoutHeaders(this.actionUrl + "/" + this._configuration.getManagementRole() + "/" + this._configuration.getManagementId() + "/below-performer/program/" + programId)
+      .then(res => {
+        return res;
+      })
+      .catch(err => {
+        if (err.status == 0) {
+          this.safeHttp.ErrorMessage();
+        } else {
+          return Promise.reject(err);
+        }
+      });
+  }
+  public getBelowPerfomanceStudentsByStandard(programId, standardId) {
+    return this.safeHttp.getWithoutHeaders(this.actionUrl + "/" + this._configuration.getManagementRole() + "/" + this._configuration.getManagementId() + "/below-performer/program/" + programId + "/" + standardId)
+      .then(res => {
+        return res;
+      })
+      .catch(err => {
+        if (err.status == 0) {
+          this.safeHttp.ErrorMessage();
+        } else {
+          return Promise.reject(err);
+        }
+      });
   }
   
-  public getComplaintByCategoryId(categoryId){
-    return this.safeHttp.getWithoutHeaders(this.actionUrl+"/"+this._configuration.getManagementRole()+"/"+this._configuration.getManagementId()+"/complaint/category-status/category/"+categoryId)
-    .then(res =>{
-      return res;
-    })
-    .catch(err =>{
-      if (err.status == 0) {
+  public getPlansForBelowPerformer(){
+    return this.safeHttp.getWithoutHeaders(this.actionUrl + "/" + this._configuration.getManagementRole() + "/" + this._configuration.getManagementId() + "/below-performer/program/plan")
+      .then(res => {
+        return res;
+      })
+      .catch(err => {
+        if (err.status == 0) {
           this.safeHttp.ErrorMessage();
         } else {
           return Promise.reject(err);
         }
-    })
-  }
-  
-    public getComplaintByCategoryAndStatusId(categoryId,statusId){
-    return this.safeHttp.getWithoutHeaders(this.actionUrl+"/"+this._configuration.getManagementRole()+"/"+this._configuration.getManagementId()+"/complaint/category-status/"+categoryId+"/"+statusId)
-    .then(res =>{
-      return res;
-    })
-    .catch(err =>{
-      if (err.status == 0) {
-          this.safeHttp.ErrorMessage();
-        } else {
-          return Promise.reject(err);
-        }
-    })
-  }
-  
-  public getComplaintOfProgram(){
-    return this.safeHttp.get(this.actionUrl+"/"+this._configuration.getManagementRole()+"/"+this._configuration.getManagementId()+"/complaint/program-standard")
-    .then(res =>{
-      return res;
-    })
-    .catch(err =>{
-      if (err.status == 0) {
-          this.safeHttp.ErrorMessage();
-        } else {
-          return Promise.reject(err);
-        }
-    });
-  }
-  public getBelowPerfomanceOfProgram(){
-    return this.safeHttp.get(this.actionUrl+"/"+this._configuration.getManagementRole()+"/"+this._configuration.getManagementId()+"/below-performer/program")
-    .then(res =>{
-      return res;
-    })
-    .catch(err =>{
-      if (err.status == 0) {
-          this.safeHttp.ErrorMessage();
-        } else {
-          return Promise.reject(err);
-        }
-    });
-  }
-  public getBelowPerfomanceOfProgramById(programId){
-    return this.safeHttp.get(this.actionUrl+"/"+this._configuration.getManagementRole()+"/"+this._configuration.getManagementId()+"/below-performer/program/"+programId)
-    .then(res =>{
-      return res;
-    })
-    .catch(err =>{
-      if (err.status == 0) {
-          this.safeHttp.ErrorMessage();
-        } else {
-          return Promise.reject(err);
-        }
-    });
+      });
   }
 }

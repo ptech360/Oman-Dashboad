@@ -5,12 +5,12 @@
 
 <div class="row" (window:resize)="onResize($event)" >
   <ba-card class="col-xlg-6 col-xl-6 col-lg-12 col-sm-12 col-xs-12"
-                     title="Complaints Report" baCardClass="traffic-panel medium-card">
+                     title="Complaints Report - Statuswise" baCardClass="traffic-panel medium-card">
   <div id="chart_by_status" style="width:100%;height:80%;"></div>
   </ba-card>
 
   <ba-card class="col-xlg-6 col-xl-6 col-lg-12 col-sm-12 col-xs-12"
-           title="Complaint of Programs" baCardClass="medium-card">
+           title="Complaint Report - Programwise" baCardClass="medium-card">
   <div id="chart_by_program_standard" style="width:100%;height:80%;"></div>
   </ba-card>
 </div>
@@ -19,18 +19,19 @@
   <div class="col-xlg-9 col-xl-6 col-lg-6  col-md-12 col-sm-12 col-xs-12">
     <div class="row">
       <ba-card class="col-xlg-8 col-xl-12 col-lg-12 col-md-7 col-sm-12 col-xs-12"
-               title="Below Performance Of Programs" baCardClass="medium-card">
+               title="Below Performance Report - Programwise" baCardClass="medium-card">
+      <i class="fa fa-arrow-left" aria-hidden="true" *ngIf="drilled" (click)="back()" style="cursor:pointer"></i>
       <div id="chart_of_below_permance" style="width:100%;height:80%;"></div>
       </ba-card>
       <ba-card class="col-xlg-4 col-xl-12 col-lg-12 col-md-5 col-sm-12 col-xs-12"
-               title="Complaints Report" baCardClass="popular-app medium-card">
-        
+               title="Plans For Below Performers" baCardClass="popular-app medium-card"> 
+      <div id="chart_div" style="width:100%;height:80%;"></div>                      
       </ba-card>
     </div>
   </div>
 
   <div class="col-xlg-3 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-xs-12">
-    <ba-card title="Complaint According to Category"
+    <ba-card title="Complaint Report - Categorywise"
              baCardClass="large-card with-scroll feed-panel">
     <div id="chart_by_category_status" style="width:100%;height:80%;"></div>
     </ba-card>

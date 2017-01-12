@@ -31,6 +31,18 @@ class Dashboard {
         this.c.getComplaintByCategoryId(params['categoryId']).then(res =>{
           this.complaintArray = res;
         });
+      if(params['standardId']&&params['programId']) 
+        this.c.getComplaintOfProgramByProgramAndStandardId(params['programId'],params['standardId']).then(res =>{
+          this.complaintArray = res;
+        });
+      else if(params['standardId'])
+        this.c.getComplaintByStatusId(params['standardId']).then(res =>{
+          this.complaintArray = res;
+        });
+      else if(params['programId'])
+        this.c.getComplaintOfProgramByProgramId(params['programId']).then(res =>{
+          this.complaintArray = res;
+        });
     });
     
   }
